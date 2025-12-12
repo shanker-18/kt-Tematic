@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  h2 Asset Categories
+  .mb-3
+    a.btn.btn-primary(href='/categories/add') Add Category
+  
+  table#categoriesTable.table.table-striped.table-bordered
+    thead
+      tr
+        th ID
+        th Name
+        th Description
+        th Actions
+    tbody
+      each category in categories
+        tr
+          td= category.id
+          td= category.name
+          td= category.description || '-'
+          td
+            a.btn.btn-sm.btn-info(href=`/categories/edit/${category.id}`) Edit
+
+block scripts
+  script.
+    $(document).ready(function() {
+      $('#categoriesTable').DataTable();
+    });

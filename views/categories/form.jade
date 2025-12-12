@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  h2= category ? 'Edit Category' : 'Add Category'
+  
+  form(method='POST', action=category ? `/categories/edit/${category.id}` : '/categories/add')
+    .form-group
+      label(for='name') Name *
+      input.form-control(type='text', name='name', value=category ? category.name : '', required)
+    
+    .form-group
+      label(for='description') Description
+      textarea.form-control(name='description', rows='3')= category ? category.description : ''
+    
+    button.btn.btn-primary(type='submit') Save
+    a.btn.btn-secondary.ml-2(href='/categories') Cancel

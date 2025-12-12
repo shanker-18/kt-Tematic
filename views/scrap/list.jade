@@ -1,0 +1,49 @@
+extends ../layout
+
+block content
+  h2 Scrap Asset
+  
+  if assets.length === 0
+    .alert.alert-info No assets available to scrap
+  else
+    table#scrapTable.table.table-striped.table-bordered
+      thead
+        tr
+          th Serial Number
+          th Category
+          th Make/Model
+          th Branch
+          th Actions
+      tbody
+        each asset in assets
+          tr
+            td= asset.serialNumber
+            td= asset.AssetCategory.name
+            td= `${asset.make || ''} ${asset.model || ''}`
+            td= asset.branch || '-'
+            td
+              button.btn.btn-sm.btn-danger(onclick=`scrapAsset(${asset.id})`) Scrap
+
+block scripts
+  script.
+    $(document).ready(function() {
+      $('#scrapTable').DataTable();
+    });
+    
+    function scrapAsset(id) {
+      const notes = prompt('Enter reason for scrapping:');
+      if (notes !== null) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/scrap/${id}`;
+        
+        const notesInput = document.createElement('input');
+        notesInput.type = 'hidden';
+        notesInput.name = 'notes';
+        notesInput.value = notes;
+        form.appendChild(notesInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+      }
+    }

@@ -1,0 +1,57 @@
+extends ../layout
+
+block content
+  h2 Assets
+  .row.mb-3
+    .col-md-6
+      a.btn.btn-primary(href='/assets/add') Add Asset
+    .col-md-6
+      form.form-inline.float-right(method='GET')
+        select.form-control.mr-2(name='categoryId', onchange='this.form.submit()')
+          option(value='', selected=!categoryId) All Categories
+          each cat in categories
+            option(value=cat.id, selected=categoryId==cat.id)= cat.name
+        input.form-control.mr-2(type='text', name='search', placeholder='Search...', value=search || '')
+        button.btn.btn-secondary(type='submit') Search
+  
+  table#assetsTable.table.table-striped.table-bordered
+    thead
+      tr
+        th Serial Number
+        th Make
+        th Model
+        th Category
+        th Branch
+        th Purchase Date
+        th Price
+        th Status
+        th Actions
+    tbody
+      each asset in assets
+        tr
+          td= asset.serialNumber
+          td= asset.make || '-'
+          td= asset.model || '-'
+          td= asset.AssetCategory ? asset.AssetCategory.name : '-'
+          td= asset.branch || '-'
+          td= asset.purchaseDate ? new Date(asset.purchaseDate).toLocaleDateString() : '-'
+          td= asset.purchasePrice ? '$' + asset.purchasePrice : '-'
+          td
+            if asset.status === 'available'
+              span.badge.badge-success Available
+            else if asset.status === 'issued'
+              span.badge.badge-warning Issued
+            else
+              span.badge.badge-danger Scrapped
+          td
+            a.btn.btn-sm.btn-info(href=`/assets/edit/${asset.id}`) Edit
+            a.btn.btn-sm.btn-secondary.ml-1(href=`/history/${asset.id}`) History
+
+block scripts
+  script.
+    $(document).ready(function() {
+      $('#assetsTable').DataTable({
+        "paging": true,
+        "searching": false
+      });
+    });

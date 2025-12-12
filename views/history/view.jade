@@ -1,0 +1,66 @@
+extends ../layout
+
+block content
+  h2 Asset History
+  
+  if assets
+    .form-group
+      label(for='assetSelect') Select Asset
+      select.form-control(id='assetSelect', onchange='window.location.href="/history/" + this.value')
+        option(value='', selected=!asset) All Assets
+        each a in assets
+          option(value=a.id, selected=asset && asset.id === a.id)= `${a.serialNumber} - ${a.AssetCategory.name}`
+  
+  if asset
+    .card.mb-3
+      .card-body
+        h5.card-title Asset Details
+        p
+          strong Serial Number: 
+          = asset.serialNumber
+        p
+          strong Category: 
+          = asset.AssetCategory.name
+        p
+          strong Make/Model: 
+          = `${asset.make || ''} ${asset.model || ''}`
+        p
+          strong Status: 
+          = asset.status
+  
+  table#historyTable.table.table-striped.table-bordered
+    thead
+      tr
+        th Date
+        th Asset
+        th Action
+        th Employee
+        th Amount
+        th Notes
+    tbody
+      each item in history
+        tr
+          td= new Date(item.actionDate).toLocaleString()
+          td= item.Asset ? `${item.Asset.serialNumber} - ${item.Asset.AssetCategory.name}` : '-'
+          td
+            if item.action === 'Purchase'
+              span.badge.badge-primary= item.action
+            else if item.action === 'Issued'
+              span.badge.badge-warning= item.action
+            else if item.action === 'Returned'
+              span.badge.badge-info= item.action
+            else if item.action === 'Scrapped'
+              span.badge.badge-danger= item.action
+            else
+              = item.action
+          td= item.Employee ? item.Employee.name : '-'
+          td= item.amount ? '$' + item.amount : '-'
+          td= item.notes || '-'
+
+block scripts
+  script.
+    $(document).ready(function() {
+      $('#historyTable').DataTable({
+        "order": [[0, "desc"]]
+      });
+    });

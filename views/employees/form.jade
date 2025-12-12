@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+  h2= employee ? 'Edit Employee' : 'Add Employee'
+  
+  form(method='POST', action=employee ? `/employees/edit/${employee.id}` : '/employees/add')
+    .form-group
+      label(for='name') Name *
+      input.form-control(type='text', name='name', value=employee ? employee.name : '', required)
+    
+    .form-group
+      label(for='email') Email *
+      input.form-control(type='email', name='email', value=employee ? employee.email : '', required)
+    
+    .form-group
+      label(for='phone') Phone
+      input.form-control(type='text', name='phone', value=employee ? employee.phone : '')
+    
+    .form-group
+      label(for='department') Department
+      input.form-control(type='text', name='department', value=employee ? employee.department : '')
+    
+    .form-group
+      label(for='branch') Branch
+      input.form-control(type='text', name='branch', value=employee ? employee.branch : '')
+    
+    .form-group
+      label(for='isActive') Status
+      select.form-control(name='isActive')
+        option(value='true', selected=!employee || employee.isActive) Active
+        option(value='false', selected=employee && !employee.isActive) Inactive
+    
+    button.btn.btn-primary(type='submit') Save
+    a.btn.btn-secondary.ml-2(href='/employees') Cancel

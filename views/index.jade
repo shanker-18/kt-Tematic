@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .jumbotron
+    h1.display-4 Welcome to Asset Management System
+    p.lead Track and manage your company assets efficiently
+    hr.my-4
+    p This system helps you manage employees, assets, and track asset history
+    .row.mt-4
+      .col-md-4
+        .card
+          .card-body
+            h5.card-title Employee Management
+            p.card-text Add, edit and view employees in the company
+            a.btn.btn-primary(href='/employees') Go to Employees
+      .col-md-4
+        .card
+          .card-body
+            h5.card-title Asset Management
+            p.card-text Manage all company assets and categories
+            a.btn.btn-primary(href='/assets') Go to Assets
+      .col-md-4
+        .card
+          .card-body
+            h5.card-title Stock View
+            p.card-text View available assets by branch
+            a.btn.btn-primary(href='/stock') View Stock

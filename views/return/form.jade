@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  h2 Return Asset from Employee
+  
+  if issuedAssets.length === 0
+    .alert.alert-info No assets are currently issued
+  else
+    form(method='POST', action='/return')
+      .form-group
+        label(for='issueId') Issued Asset *
+        select.form-control(name='issueId', required)
+          option(value='') Select Asset
+          each issue in issuedAssets
+            option(value=issue.id)= `${issue.Asset.serialNumber} - ${issue.Asset.AssetCategory.name} (Issued to: ${issue.Employee.name})`
+      
+      .form-group
+        label(for='reason') Reason for Return *
+        select.form-control(name='reason', required)
+          option(value='') Select Reason
+          option(value='Upgrade') Upgrade
+          option(value='Repair') Repair
+          option(value='Resignation') Resignation
+          option(value='Other') Other
+      
+      .form-group
+        label(for='notes') Notes
+        textarea.form-control(name='notes', rows='3')
+      
+      button.btn.btn-primary(type='submit') Return Asset
+      a.btn.btn-secondary.ml-2(href='/') Cancel

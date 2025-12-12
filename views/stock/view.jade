@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  h2 Stock View - Available Assets by Branch
+  
+  table#stockTable.table.table-striped.table-bordered
+    thead
+      tr
+        th Branch
+        th Total Assets
+        th Total Value
+    tbody
+      - var branchTotals = {}
+      each item in stockData
+        - if (!branchTotals[item.branch]) branchTotals[item.branch] = { count: 0, value: 0 }
+        - branchTotals[item.branch].count += parseInt(item.dataValues.count)
+        - branchTotals[item.branch].value += parseFloat(item.dataValues.totalValue || 0)
+      each val, branch in branchTotals
+        tr
+          td= branch || 'Unassigned'
+          td= val.count
+          td= '$' + val.value.toFixed(2)
+
+block scripts
+  script.
+    $(document).ready(function() {
+      $('#stockTable').DataTable();
+    });

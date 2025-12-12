@@ -1,0 +1,53 @@
+extends ../layout
+
+block content
+  h2 Employees
+  .row.mb-3
+    .col-md-6
+      a.btn.btn-primary(href='/employees/add') Add Employee
+    .col-md-6
+      form.form-inline.float-right(method='GET')
+        select.form-control.mr-2(name='status', onchange='this.form.submit()')
+          option(value='', selected=!status) All
+          option(value='active', selected=status==='active') Active
+          option(value='inactive', selected=status==='inactive') Inactive
+        input.form-control.mr-2(type='text', name='search', placeholder='Search...', value=search || '')
+        button.btn.btn-secondary(type='submit') Search
+  
+  table#employeesTable.table.table-striped.table-bordered
+    thead
+      tr
+        th ID
+        th Name
+        th Email
+        th Phone
+        th Department
+        th Branch
+        th Status
+        th Actions
+    tbody
+      each employee in employees
+        tr
+          td= employee.id
+          td= employee.name
+          td= employee.email
+          td= employee.phone || '-'
+          td= employee.department || '-'
+          td= employee.branch || '-'
+          td
+            if employee.isActive
+              span.badge.badge-success Active
+            else
+              span.badge.badge-secondary Inactive
+          td
+            a.btn.btn-sm.btn-info(href=`/employees/edit/${employee.id}`) Edit
+
+block scripts
+  script.
+    $(document).ready(function() {
+      $('#employeesTable').DataTable({
+        "paging": true,
+        "searching": false,
+        "info": true
+      });
+    });

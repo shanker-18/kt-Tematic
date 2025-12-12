@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  h2 Issue Asset to Employee
+  
+  form(method='POST', action='/issue')
+    .form-group
+      label(for='employeeId') Employee *
+      select.form-control(name='employeeId', required)
+        option(value='') Select Employee
+        each emp in employees
+          option(value=emp.id)= `${emp.name} (${emp.email})`
+    
+    .form-group
+      label(for='assetId') Asset *
+      select.form-control(name='assetId', required)
+        option(value='') Select Asset
+        each asset in assets
+          option(value=asset.id)= `${asset.serialNumber} - ${asset.AssetCategory.name} ${asset.make || ''} ${asset.model || ''}`
+    
+    .form-group
+      label(for='notes') Notes
+      textarea.form-control(name='notes', rows='3')
+    
+    button.btn.btn-primary(type='submit') Issue Asset
+    a.btn.btn-secondary.ml-2(href='/') Cancel
