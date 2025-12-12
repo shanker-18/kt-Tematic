@@ -1,6 +1,4 @@
 const { Sequelize } = require('sequelize');
-
-// Use DATABASE_URL from environment (Render provides this) or local config
 const sequelize = process.env.DATABASE_URL
   ? new Sequelize(process.env.DATABASE_URL, {
       dialect: 'postgres',
